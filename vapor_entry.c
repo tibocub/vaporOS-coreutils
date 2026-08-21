@@ -27,14 +27,35 @@
 // applet) -- ordinary shell-style invocation, not toybox's own
 // symlink-as-argv[0] convention. So argv+1 is what gets passed to
 // toy_exec(), whose own argv[0] becomes "true".
+//
+// Also the overall dispatcher for nsh-ports/ (commands ported from
+// NSH's own implementation, not toybox's -- see nsh-ports/nsh-ports.h)
+// tried first, toy_exec() as the fallback for anything not listed
+// there. Both this file and vaporshell's own dispatch table only ever
+// see one flat command namespace either way -- this internal
+// toybox-vs-nsh-ports split is purely for keeping each set easy to
+// diff against its own upstream, not something a user (or vaporshell)
+// needs to know about.
 #include "toys.h"
+#include "nsh-ports/nsh-ports.h"
 
 int main(int argc, char *argv[])
 {
+  int ret;
+
   if (argc<2) {
     fprintf(stderr, "usage: %s <command> [args...]\n", argv[0]);
 
     return 1;
+  }
+
+  // Checked first, not because order matters for users (nsh-ports and
+  // toybox names shouldn't ever collide), but because toy_exec() is
+  // the "catch everything toybox itself doesn't know" case -- see its
+  // own call below.
+  ret = nshports_dispatch(argc-1, argv+1);
+  if (ret != -1) {
+    return ret;
   }
 
   toys.stacktop = &argc;

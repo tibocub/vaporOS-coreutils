@@ -118,6 +118,18 @@ CSRCS += toys/other/which.c
 # directly by a real build).
 CSRCS += main.c
 
+# nsh-ports/: commands ported from NSH's own implementation rather than
+# toybox's, since they're about NuttX board/kernel state toybox has no
+# concept of at all (boardctl(), scheduler, mount table, ...). Kept as
+# its own set of files, dispatched via nsh-ports/dispatch.c, precisely
+# so it can be diffed against NSH's own nshlib independently of toys/
+# tracking upstream toybox -- see nsh-ports/nsh-ports.h. Not a
+# user-visible distinction: vapor_entry.c tries this table first, then
+# falls through to toybox's own toy_exec() for everything else, same
+# flat command namespace either way.
+CSRCS += nsh-ports/dispatch.c
+CSRCS += nsh-ports/poweroff.c
+
 MAINSRC = vapor_entry.c
 
 include $(APPDIR)/Application.mk
