@@ -7,7 +7,7 @@ MODULE    = $(CONFIG_VAPOROS_TOYBOX)
 
 # Vendored toybox (codeberg.org/landley/toybox, commit
 # e76971b0a7919f13ce9c5eb4b194f93d8c8a9645) plus a NuttX portability
-# patch (see docs/vaporshell.md) -- same "vendored source, not fetched
+# patch (see docs/porting-notes.md) -- same "vendored source, not fetched
 # dependency" approach as vterm/libvterm, for the same reason: no
 # network fetch step to fail mid-build.
 #
@@ -20,7 +20,7 @@ MODULE    = $(CONFIG_VAPOROS_TOYBOX)
 # handled. Real consequence: adding applets beyond this 4-command scope
 # means regenerating generated/*.h on a host toybox checkout (with the
 # new .config) and recommitting them here -- not something this build
-# does automatically. See docs/vaporshell.md for the regeneration
+# does automatically. See docs/porting-notes.md for the regeneration
 # steps once that's needed.
 CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/external/toybox
 CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/external/toybox/nuttx-shims
@@ -86,7 +86,7 @@ CSRCS += toys/posix/ls.c
 CSRCS += toys/posix/cp.c
 
 # Diagnostic-motivated (real $PWD-vs-real-CWD desync investigation,
-# docs/vaporshell.md), but genuinely useful on its own -- tiny (41
+# docs/porting-notes.md), but genuinely useful on its own -- tiny (41
 # lines), dependency-free, just dumps environ directly.
 CSRCS += toys/other/printenv.c
 
