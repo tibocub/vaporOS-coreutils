@@ -211,11 +211,11 @@
 #define CFG_TEE 0
 #define USE_TEE(...)
 #define SKIP_TEE(...) __VA_ARGS__
-#define CFG_TEST 0
-#define USE_TEST(...)
+#define CFG_TEST 1
+#define USE_TEST(...) __VA_ARGS__
 #define SKIP_TEST(...) __VA_ARGS__
-#define CFG_TEST_GLUE 0
-#define USE_TEST_GLUE(...)
+#define CFG_TEST_GLUE 1
+#define USE_TEST_GLUE(...) __VA_ARGS__
 #define SKIP_TEST_GLUE(...) __VA_ARGS__
 #define CFG_TIME 0
 #define USE_TIME(...)

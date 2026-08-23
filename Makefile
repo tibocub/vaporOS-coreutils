@@ -86,6 +86,7 @@ CSRCS += toys/posix/basename.c
 CSRCS += toys/posix/dirname.c
 CSRCS += toys/posix/sleep.c
 CSRCS += toys/other/which.c
+CSRCS += toys/posix/test.c
 
 # toybox's own main.c is compiled as a plain CSRCS file, not MAINSRC --
 # its own "int main(argc, argv)" is left completely unrenamed (a
