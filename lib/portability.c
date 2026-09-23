@@ -287,23 +287,95 @@ int xnotify_wait(struct xnotify *not, char **path)
 
 #elif defined(__NuttX__)
 
-// No kqueue, no inotify. Not used by anything in the current applet
-// scope -- same treatment as the mount-table gap above: a real gap,
-// left unimplemented rather than faked, not something a shim header
-// can paper over (there's no NuttX facility to shim to).
+// NuttX has no kqueue or inotify, so file-watch is done by polling: stat
+// every watched file and report the first whose size or mtime changed
+// since it was last reported, sleeping between rounds. Costs nothing while
+// idle beyond one wakeup per interval, needs no kernel support, and works
+// on every NuttX filesystem. Only tail -f uses this today.
+#define XNOTIFY_POLL_MS 250
+
+struct xnotify_state {
+  off_t size;
+  struct timespec mtime;
+};
+
+// Observed on the sim's VFAT /tmp: a file already open for reading does not
+// see bytes another open() appended (read() returns 0, fstat() keeps the old
+// size), while a fresh open() does. hostfs behaves as expected. So when the
+// path shows growth, re-open it and dup2() the new descriptor over the old
+// one at the same offset, which makes following work on FAT too.
+void vapor_refresh_fd(int fd, char *path)
+{
+  off_t pos = lseek(fd, 0, SEEK_CUR);
+  int nfd;
+
+  if (pos<0 || (nfd = open(path, O_RDONLY))<0) return;
+  if (lseek(nfd, pos, SEEK_SET) == pos) dup2(nfd, fd);
+  close(nfd);
+}
+
+// tail hands stdin over as "/proc/self/fd/0": not a real path here, so
+// those entries are only ever polled through their descriptor.
+static int xnotify_stat(struct xnotify *not, int i, struct stat *sb)
+{
+  if (!strncmp(not->paths[i], "/proc/", 6)) return fstat(not->fds[i], sb);
+
+  return stat(not->paths[i], sb);
+}
+
 struct xnotify *xnotify_init(int max)
 {
-  error_exit("no file-watch support on NuttX");
+  struct xnotify *not = xzalloc(sizeof(struct xnotify));
+
+  not->max = max;
+  not->paths = xmalloc(max * sizeof(char *));
+  not->fds = xmalloc(max * sizeof(int));
+  not->poll = xmalloc(max * sizeof(struct xnotify_state));
+
+  return not;
 }
 
 int xnotify_add(struct xnotify *not, int fd, char *path)
 {
-  error_exit("no file-watch support on NuttX");
+  struct xnotify_state *st = not->poll;
+  struct stat sb;
+
+  if (not->max == not->count) error_exit("xnotify_add overflow");
+  not->fds[not->count] = fd;
+  not->paths[not->count] = path;
+  if (xnotify_stat(not, not->count, &sb))
+    perror_exit("xnotify_add failed on %s", path);
+
+  st[not->count].size = sb.st_size;
+  st[not->count].mtime = sb.st_mtim;
+  not->count++;
+
+  return 0;
 }
 
 int xnotify_wait(struct xnotify *not, char **path)
 {
-  error_exit("no file-watch support on NuttX");
+  struct xnotify_state *st = not->poll;
+  struct stat sb;
+  int i;
+
+  for (;;) {
+    for (i = 0; i<not->count; i++) {
+      if (xnotify_stat(not, i, &sb)) continue;
+      if (sb.st_size == st[i].size &&
+          sb.st_mtim.tv_sec == st[i].mtime.tv_sec &&
+          sb.st_mtim.tv_nsec == st[i].mtime.tv_nsec) continue;
+
+      st[i].size = sb.st_size;
+      st[i].mtime = sb.st_mtim;
+      if (strncmp(not->paths[i], "/proc/", 6))
+        vapor_refresh_fd(not->fds[i], not->paths[i]);
+      *path = not->paths[i];
+
+      return not->fds[i];
+    }
+    msleep(XNOTIFY_POLL_MS);
+  }
 }
 
 #else

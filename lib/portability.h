@@ -400,11 +400,17 @@ static inline void confstr(int a, char *b, int c) {strcpy(b, a ? "POSIXLY_CORREC
 struct xnotify {
   char **paths;
   int max, *fds, count, kq;
+#ifdef __NuttX__
+  void *poll;   // per-fd last-seen size/mtime, see xnotify_wait() in portability.c
+#endif
 };
 
 struct xnotify *xnotify_init(int max);
 int xnotify_add(struct xnotify *not, int fd, char *path);
 int xnotify_wait(struct xnotify *not, char **path);
+#ifdef __NuttX__
+void vapor_refresh_fd(int fd, char *path);
+#endif
 
 int sig_to_num(char *s);
 char *num_to_sig(int sig);

@@ -39,9 +39,59 @@
 #include "toys.h"
 #include "nsh-ports/nsh-ports.h"
 
+#include <nuttx/tls.h>
+#include <pthread.h>
+
+#if !defined(CONFIG_TLS_TASK_NELEM) || CONFIG_TLS_TASK_NELEM < 1
+#  error "vaporOS-coreutils needs CONFIG_TLS_TASK_NELEM >= 1 (task-local toybox globals)"
+#endif
+
+// Task-local storage slot holding this task's struct vapor_ctx. Allocated
+// once, by whichever tbx task starts first; the mutex matters because a
+// pipeline spawns its stages at nearly the same time.
+static pthread_mutex_t g_ctx_lock = PTHREAD_MUTEX_INITIALIZER;
+static int g_ctx_slot = -1;
+
+static void vapor_ctx_free(void *ctx)
+{
+  free(ctx);
+}
+
+struct vapor_ctx *vapor_ctx(void)
+{
+  return (struct vapor_ctx *)task_tls_get_value(g_ctx_slot);
+}
+
+// Returns 0 on success. Must run before anything touches toys/this/toybuf.
+static int vapor_ctx_init(void)
+{
+  struct vapor_ctx *ctx;
+  int slot;
+
+  pthread_mutex_lock(&g_ctx_lock);
+  if (g_ctx_slot < 0) g_ctx_slot = task_tls_alloc(vapor_ctx_free);
+  slot = g_ctx_slot;
+  pthread_mutex_unlock(&g_ctx_lock);
+  if (slot < 0) return -1;
+
+  if (!(ctx = calloc(1, sizeof(*ctx)))) return -1;
+  if (task_tls_set_value(slot, (uintptr_t)ctx)) {
+    free(ctx);
+    return -1;
+  }
+
+  return 0;
+}
+
 int main(int argc, char *argv[])
 {
   int ret;
+
+  if (vapor_ctx_init()) {
+    fprintf(stderr, "%s: out of memory\n", argv[0]);
+
+    return 1;
+  }
 
   if (argc<2) {
     fprintf(stderr, "usage: %s <command> [args...]\n", argv[0]);

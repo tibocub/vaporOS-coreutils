@@ -58,9 +58,9 @@ nothing yet - all current commands come from toybox or nsh
 - [x] sleep
 - [x] which
 - [ ] find
-- [ ] head
-- [ ] tail
-- [ ] cut
+- [x] head
+- [x] tail
+- [x] cut
 - [ ] ln
 - [ ] acpi
 - [ ] arch
@@ -195,7 +195,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] shred
 - [ ] sleep
 - [ ] sntp
-- [ ] sort
+- [x] sort
 - [ ] split
 - [ ] stat
 - [ ] strings
@@ -209,7 +209,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] tail
 - [ ] tar
 - [ ] taskset
-- [ ] tee
+- [x] tee
 - [ ] test
 - [ ] time
 - [ ] timeout
@@ -222,7 +222,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] ulimit
 - [ ] umount
 - [ ] uname
-- [ ] uniq
+- [x] uniq
 - [ ] unix2dos
 - [ ] unlink
 - [ ] unshare
@@ -235,13 +235,13 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] vmstat
 - [ ] watch
 - [ ] watchdog
-- [ ] wc
+- [x] wc
 - [ ] which
 - [ ] who
 - [ ] whoami
 - [ ] xargs
 - [ ] xxd
-- [ ] yes
+- [x] yes
 - [ ] zcat
 
 ## NSH PORTS

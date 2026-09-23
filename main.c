@@ -22,9 +22,11 @@ struct toy_list toy_list[] = {
 
 // global context for this command.
 
+#ifndef __NuttX__
 struct toy_context toys;
 union global_union this;
 char toybuf[4096], libbuf[4096];
+#endif // NuttX: per-task, see nuttx-shims/vapor_ctx.h
 const char *toybox_version = TOYBOX_VERSION;
 
 struct toy_list *toy_find(char *name)

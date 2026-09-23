@@ -114,7 +114,7 @@
 #undef FLAG_d
 #endif
 
-// basename   ^<1as:
+// basename ^<1as: ^<1as:
 #undef OPTSTR_basename
 #define OPTSTR_basename "^<1as:"
 #ifdef CLEANUP_basename
@@ -511,7 +511,7 @@
 #undef FLAG_s
 #endif
 
-// cut   b*|c*|f*|F(regex-fields)*|C*|O(output-delimiter):d:sD(allow-duplicates)n[!cbfF]
+// cut b*|c*|f*|F(regex-fields)*|C*|O(output-delimiter):d:sD(allow-duplicates)n[!cbfF] b*|c*|f*|F(regex-fields)*|C*|O(output-delimiter):d:sD(allow-duplicates)n[!cbfF]
 #undef OPTSTR_cut
 #define OPTSTR_cut "b*|c*|f*|F(regex-fields)*|C*|O(output-delimiter):d:sD(allow-duplicates)n[!cbfF]"
 #ifdef CLEANUP_cut
@@ -792,7 +792,7 @@
 #undef FLAG_unchanged_line_format
 #endif
 
-// dirname   <1
+// dirname <1 <1
 #undef OPTSTR_dirname
 #define OPTSTR_dirname "<1"
 #ifdef CLEANUP_dirname
@@ -1403,7 +1403,7 @@
 #undef FOR_hd
 #endif
 
-// head   ?n(lines)#<0=10c(bytes)#<0qv[-nc]
+// head ?n(lines)#<0=10c(bytes)#<0qv[-nc] ?n(lines)#<0=10c(bytes)#<0qv[-nc]
 #undef OPTSTR_head
 #define OPTSTR_head "?n(lines)#<0=10c(bytes)#<0qv[-nc]"
 #ifdef CLEANUP_head
@@ -3027,7 +3027,7 @@
 #undef FLAG_b
 #endif
 
-// sleep   <1
+// sleep <1 <1
 #undef OPTSTR_sleep
 #define OPTSTR_sleep "<1"
 #ifdef CLEANUP_sleep
@@ -3054,9 +3054,9 @@
 #undef FLAG_M
 #endif
 
-// sort   gS:T:mo:k*t:xVbMCcszdfirun
+// sort S:T:mo:k*t:xVbMCcszdfirun gS:T:mo:k*t:xVbMCcszdfirun
 #undef OPTSTR_sort
-#define OPTSTR_sort "gS:T:mo:k*t:xVbMCcszdfirun"
+#define OPTSTR_sort "S:T:mo:k*t:xVbMCcszdfirun"
 #ifdef CLEANUP_sort
 #undef CLEANUP_sort
 #undef FOR_sort
@@ -3258,7 +3258,7 @@
 #undef FOR_tac
 #endif
 
-// tail   ?fFs:c(bytes)-n(lines)-[-cn][-fF]
+// tail ?fFs:c(bytes)-n(lines)-[-cn][-fF] ?fFs:c(bytes)-n(lines)-[-cn][-fF]
 #undef OPTSTR_tail
 #define OPTSTR_tail "?fFs:c(bytes)-n(lines)-[-cn][-fF]"
 #ifdef CLEANUP_tail
@@ -3356,7 +3356,7 @@
 #undef FLAG_c
 #endif
 
-// tee   ia
+// tee ia ia
 #undef OPTSTR_tee
 #define OPTSTR_tee "ia"
 #ifdef CLEANUP_tee
@@ -3702,7 +3702,7 @@
 #undef FOR_unicode
 #endif
 
-// uniq   f#s#w#zicdu
+// uniq f#s#w#zicdu f#s#w#zicdu
 #undef OPTSTR_uniq
 #define OPTSTR_uniq "f#s#w#zicdu"
 #ifdef CLEANUP_uniq
@@ -3901,7 +3901,7 @@
 #undef FLAG_F
 #endif
 
-// wc   Lcmwl
+// wc Lcmwl Lcmwl
 #undef OPTSTR_wc
 #define OPTSTR_wc "Lcmwl"
 #ifdef CLEANUP_wc
@@ -3926,7 +3926,7 @@
 #undef FLAG_max_redirect
 #endif
 
-// which   <1a
+// which <1a <1a
 #undef OPTSTR_which
 #define OPTSTR_which "<1a"
 #ifdef CLEANUP_which
@@ -4487,16 +4487,16 @@
 #ifndef TT
 #define TT this.cut
 #endif
-#define FLAG_n (FORCED_FLAG<<0)
-#define FLAG_D (FORCED_FLAG<<1)
-#define FLAG_s (FORCED_FLAG<<2)
-#define FLAG_d (FORCED_FLAG<<3)
-#define FLAG_O (FORCED_FLAG<<4)
-#define FLAG_C (FORCED_FLAG<<5)
-#define FLAG_F (FORCED_FLAG<<6)
-#define FLAG_f (FORCED_FLAG<<7)
-#define FLAG_c (FORCED_FLAG<<8)
-#define FLAG_b (FORCED_FLAG<<9)
+#define FLAG_n (1LL<<0)
+#define FLAG_D (1LL<<1)
+#define FLAG_s (1LL<<2)
+#define FLAG_d (1LL<<3)
+#define FLAG_O (1LL<<4)
+#define FLAG_C (1LL<<5)
+#define FLAG_F (1LL<<6)
+#define FLAG_f (1LL<<7)
+#define FLAG_c (1LL<<8)
+#define FLAG_b (1LL<<9)
 #endif
 
 #ifdef FOR_date
@@ -5311,10 +5311,10 @@
 #ifndef TT
 #define TT this.head
 #endif
-#define FLAG_v (FORCED_FLAG<<0)
-#define FLAG_q (FORCED_FLAG<<1)
-#define FLAG_c (FORCED_FLAG<<2)
-#define FLAG_n (FORCED_FLAG<<3)
+#define FLAG_v (1LL<<0)
+#define FLAG_q (1LL<<1)
+#define FLAG_c (1LL<<2)
+#define FLAG_n (1LL<<3)
 #endif
 
 #ifdef FOR_hello
@@ -6829,26 +6829,26 @@
 #ifndef TT
 #define TT this.sort
 #endif
-#define FLAG_n (FORCED_FLAG<<0)
-#define FLAG_u (FORCED_FLAG<<1)
-#define FLAG_r (FORCED_FLAG<<2)
-#define FLAG_i (FORCED_FLAG<<3)
-#define FLAG_f (FORCED_FLAG<<4)
-#define FLAG_d (FORCED_FLAG<<5)
-#define FLAG_z (FORCED_FLAG<<6)
-#define FLAG_s (FORCED_FLAG<<7)
-#define FLAG_c (FORCED_FLAG<<8)
-#define FLAG_C (FORCED_FLAG<<9)
-#define FLAG_M (FORCED_FLAG<<10)
-#define FLAG_b (FORCED_FLAG<<11)
-#define FLAG_V (FORCED_FLAG<<12)
-#define FLAG_x (FORCED_FLAG<<13)
-#define FLAG_t (FORCED_FLAG<<14)
-#define FLAG_k (FORCED_FLAG<<15)
-#define FLAG_o (FORCED_FLAG<<16)
-#define FLAG_m (FORCED_FLAG<<17)
-#define FLAG_T (FORCED_FLAG<<18)
-#define FLAG_S (FORCED_FLAG<<19)
+#define FLAG_n (1LL<<0)
+#define FLAG_u (1LL<<1)
+#define FLAG_r (1LL<<2)
+#define FLAG_i (1LL<<3)
+#define FLAG_f (1LL<<4)
+#define FLAG_d (1LL<<5)
+#define FLAG_z (1LL<<6)
+#define FLAG_s (1LL<<7)
+#define FLAG_c (1LL<<8)
+#define FLAG_C (1LL<<9)
+#define FLAG_M (1LL<<10)
+#define FLAG_b (1LL<<11)
+#define FLAG_V (1LL<<12)
+#define FLAG_x (1LL<<13)
+#define FLAG_t (1LL<<14)
+#define FLAG_k (1LL<<15)
+#define FLAG_o (1LL<<16)
+#define FLAG_m (1LL<<17)
+#define FLAG_T (1LL<<18)
+#define FLAG_S (1LL<<19)
 #define FLAG_g (FORCED_FLAG<<20)
 #endif
 
@@ -7017,11 +7017,11 @@
 #ifndef TT
 #define TT this.tail
 #endif
-#define FLAG_n (FORCED_FLAG<<0)
-#define FLAG_c (FORCED_FLAG<<1)
-#define FLAG_s (FORCED_FLAG<<2)
-#define FLAG_F (FORCED_FLAG<<3)
-#define FLAG_f (FORCED_FLAG<<4)
+#define FLAG_n (1LL<<0)
+#define FLAG_c (1LL<<1)
+#define FLAG_s (1LL<<2)
+#define FLAG_F (1LL<<3)
+#define FLAG_f (1LL<<4)
 #endif
 
 #ifdef FOR_tar
@@ -7111,8 +7111,8 @@
 #ifndef TT
 #define TT this.tee
 #endif
-#define FLAG_a (FORCED_FLAG<<0)
-#define FLAG_i (FORCED_FLAG<<1)
+#define FLAG_a (1LL<<0)
+#define FLAG_i (1LL<<1)
 #endif
 
 #ifdef FOR_telnet
@@ -7430,14 +7430,14 @@
 #ifndef TT
 #define TT this.uniq
 #endif
-#define FLAG_u (FORCED_FLAG<<0)
-#define FLAG_d (FORCED_FLAG<<1)
-#define FLAG_c (FORCED_FLAG<<2)
-#define FLAG_i (FORCED_FLAG<<3)
-#define FLAG_z (FORCED_FLAG<<4)
-#define FLAG_w (FORCED_FLAG<<5)
-#define FLAG_s (FORCED_FLAG<<6)
-#define FLAG_f (FORCED_FLAG<<7)
+#define FLAG_u (1LL<<0)
+#define FLAG_d (1LL<<1)
+#define FLAG_c (1LL<<2)
+#define FLAG_i (1LL<<3)
+#define FLAG_z (1LL<<4)
+#define FLAG_w (1LL<<5)
+#define FLAG_s (1LL<<6)
+#define FLAG_f (1LL<<7)
 #endif
 
 #ifdef FOR_unix2dos
@@ -7610,11 +7610,11 @@
 #ifndef TT
 #define TT this.wc
 #endif
-#define FLAG_l (FORCED_FLAG<<0)
-#define FLAG_w (FORCED_FLAG<<1)
-#define FLAG_m (FORCED_FLAG<<2)
-#define FLAG_c (FORCED_FLAG<<3)
-#define FLAG_L (FORCED_FLAG<<4)
+#define FLAG_l (1LL<<0)
+#define FLAG_w (1LL<<1)
+#define FLAG_m (1LL<<2)
+#define FLAG_c (1LL<<3)
+#define FLAG_L (1LL<<4)
 #endif
 
 #ifdef FOR_wget

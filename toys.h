@@ -144,3 +144,9 @@ extern const char *toybox_version;
 #endif
 #define TOYBOX_VERSION "0.8.14"TOYBOX_VENDOR
 #endif
+
+#ifdef __NuttX__
+// NuttX shims: per-task toys/this/toybuf/libbuf, POSIX getline() semantics.
+#include "vapor_ctx.h"
+#include "vapor_libc.h"
+#endif

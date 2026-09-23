@@ -46,9 +46,9 @@
 #define CFG_CPIO 0
 #define USE_CPIO(...)
 #define SKIP_CPIO(...) __VA_ARGS__
-#define CFG_CUT 0
-#define USE_CUT(...)
-#define SKIP_CUT(...) __VA_ARGS__
+#define CFG_CUT 1
+#define USE_CUT(...) __VA_ARGS__
+#define SKIP_CUT(...)
 #define CFG_DATE 0
 #define USE_DATE(...)
 #define SKIP_DATE(...) __VA_ARGS__
@@ -97,9 +97,9 @@
 #define CFG_FGREP 0
 #define USE_FGREP(...)
 #define SKIP_FGREP(...) __VA_ARGS__
-#define CFG_HEAD 0
-#define USE_HEAD(...)
-#define SKIP_HEAD(...) __VA_ARGS__
+#define CFG_HEAD 1
+#define USE_HEAD(...) __VA_ARGS__
+#define SKIP_HEAD(...)
 #define CFG_ICONV 0
 #define USE_ICONV(...)
 #define SKIP_ICONV(...) __VA_ARGS__
@@ -193,30 +193,30 @@
 #define CFG_SLEEP 1
 #define USE_SLEEP(...) __VA_ARGS__
 #define SKIP_SLEEP(...)
-#define CFG_SORT 0
-#define USE_SORT(...)
-#define SKIP_SORT(...) __VA_ARGS__
+#define CFG_SORT 1
+#define USE_SORT(...) __VA_ARGS__
+#define SKIP_SORT(...)
 #define CFG_SPLIT 0
 #define USE_SPLIT(...)
 #define SKIP_SPLIT(...) __VA_ARGS__
 #define CFG_STRINGS 0
 #define USE_STRINGS(...)
 #define SKIP_STRINGS(...) __VA_ARGS__
-#define CFG_TAIL 0
-#define USE_TAIL(...)
-#define SKIP_TAIL(...) __VA_ARGS__
+#define CFG_TAIL 1
+#define USE_TAIL(...) __VA_ARGS__
+#define SKIP_TAIL(...)
 #define CFG_TAR 0
 #define USE_TAR(...)
 #define SKIP_TAR(...) __VA_ARGS__
-#define CFG_TEE 0
-#define USE_TEE(...)
-#define SKIP_TEE(...) __VA_ARGS__
+#define CFG_TEE 1
+#define USE_TEE(...) __VA_ARGS__
+#define SKIP_TEE(...)
 #define CFG_TEST 1
 #define USE_TEST(...) __VA_ARGS__
-#define SKIP_TEST(...) __VA_ARGS__
+#define SKIP_TEST(...)
 #define CFG_TEST_GLUE 1
 #define USE_TEST_GLUE(...) __VA_ARGS__
-#define SKIP_TEST_GLUE(...) __VA_ARGS__
+#define SKIP_TEST_GLUE(...)
 #define CFG_TIME 0
 #define USE_TIME(...)
 #define SKIP_TIME(...) __VA_ARGS__
@@ -241,9 +241,9 @@
 #define CFG_UNAME 0
 #define USE_UNAME(...)
 #define SKIP_UNAME(...) __VA_ARGS__
-#define CFG_UNIQ 0
-#define USE_UNIQ(...)
-#define SKIP_UNIQ(...) __VA_ARGS__
+#define CFG_UNIQ 1
+#define USE_UNIQ(...) __VA_ARGS__
+#define SKIP_UNIQ(...)
 #define CFG_UNLINK 0
 #define USE_UNLINK(...)
 #define SKIP_UNLINK(...) __VA_ARGS__
@@ -253,9 +253,9 @@
 #define CFG_UUENCODE 0
 #define USE_UUENCODE(...)
 #define SKIP_UUENCODE(...) __VA_ARGS__
-#define CFG_WC 0
-#define USE_WC(...)
-#define SKIP_WC(...) __VA_ARGS__
+#define CFG_WC 1
+#define USE_WC(...) __VA_ARGS__
+#define SKIP_WC(...)
 #define CFG_WHO 0
 #define USE_WHO(...)
 #define SKIP_WHO(...) __VA_ARGS__
@@ -841,9 +841,9 @@
 #define CFG_XXD 0
 #define USE_XXD(...)
 #define SKIP_XXD(...) __VA_ARGS__
-#define CFG_YES 0
-#define USE_YES(...)
-#define SKIP_YES(...) __VA_ARGS__
+#define CFG_YES 1
+#define USE_YES(...) __VA_ARGS__
+#define SKIP_YES(...)
 #define CFG_FTPGET 0
 #define USE_FTPGET(...)
 #define SKIP_FTPGET(...) __VA_ARGS__
@@ -1051,5 +1051,5 @@
 #define USE_TOYBOX_FORCE_NOMMU(...)
 #define SKIP_TOYBOX_FORCE_NOMMU(...) __VA_ARGS__
 #define CFG_TOYBOX_FORK 0
-#define USE_TOYBOX_FORK(...) __VA_ARGS__
-#define SKIP_TOYBOX_FORK(...)
+#define USE_TOYBOX_FORK(...)
+#define SKIP_TOYBOX_FORK(...) __VA_ARGS__

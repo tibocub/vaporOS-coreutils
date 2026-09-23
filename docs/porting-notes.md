@@ -100,3 +100,32 @@ saga above. Applet count: `true`, `false`, `echo`, `pwd` (batch 1),
 heavier applets (directory traversal, permission/symlink handling)
 likely to surface new platform gaps the way earlier batches did.
 
+
+## Batch 4: head tail wc tee cut uniq sort yes
+
+**Workflow now:** to enable an applet, flip its line in
+`scripts/toybox.config`, copy its `.c` from upstream (same `toys/<dir>/`),
+add it to the Makefile `CSRCS`, run `scripts/regen.sh <toybox checkout at
+the pinned commit>`. `tests/` holds the host-toybox-vs-sim comparison.
+
+Problems found by running on the sim (all reproduced with gdb, not
+guessed), and where each is handled:
+
+- **Concurrent tbx tasks shared toybox's globals.** Flat build = one address
+  space, so `toys`, `this`, `toybuf`, `libbuf` were shared by every stage of
+  a pipeline (`yes | head > file` segfaulted). Each tbx task now gets a heap
+  context through task-local storage; `nuttx-shims/vapor_ctx.h` remaps the
+  four names, `vapor_entry.c` allocates it. Not covered: file-scope
+  `static` variables inside applets/lib -- check new ports for them.
+- **`getline()`/`getdelim()` with a NULL buffer used an uninitialized size**
+  (POSIX ignores it, NuttX mallocs it): sort/cut/uniq printed nothing or
+  one line. Fixed once in `nuttx-shims/vapor_libc.h`.
+- **`tail -f`** needed `xnotify_*`; implemented by polling (250 ms). On the
+  sim's VFAT `/tmp` an already-open fd does not see bytes appended through
+  another open (hostfs does), so growth is followed by re-opening the path
+  and `dup2()`ing it back at the same offset (`vapor_refresh_fd`).
+- **`wc` name collision** with the `portable_wc` app (`wc_main`); the app
+  is now `vwc`. Any future applet named like a NuttX app has the same risk.
+- `cut -F`, and later grep/sed/expr, need `CONFIG_LIBC_REGEX`. NuttX's has
+  no `REG_STARTEND`, so text with embedded NUL bytes is cut off at the NUL.
+- `seq` left out: upstream needs `TOYBOX_FLOAT`, which is off here.

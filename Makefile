@@ -20,8 +20,8 @@ MODULE    = $(CONFIG_VAPOROS_TOYBOX)
 # handled. Real consequence: adding applets beyond this 4-command scope
 # means regenerating generated/*.h on a host toybox checkout (with the
 # new .config) and recommitting them here -- not something this build
-# does automatically. See docs/porting-notes.md for the regeneration
-# steps once that's needed.
+# does automatically. scripts/regen.sh does it (enable the applet in
+# scripts/toybox.config first).
 CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/external/toybox
 CFLAGS += ${INCDIR_PREFIX}$(APPDIR)/external/toybox/nuttx-shims
 
@@ -87,6 +87,24 @@ CSRCS += toys/posix/dirname.c
 CSRCS += toys/posix/sleep.c
 CSRCS += toys/other/which.c
 CSRCS += toys/posix/test.c
+
+# Text-pipeline batch: head tail wc tee cut uniq sort yes. All stdio/fd
+# based, no fork/exec, no symlink or mount-table needs. Two things worth
+# knowing, both handled elsewhere rather than here:
+#  - cut -F (regex-separated fields) calls regcomp()/regexec(), so this
+#    batch needs CONFIG_LIBC_REGEX (NuttX's TRE-based regex, which itself
+#    needs CONFIG_ALLOW_MIT_COMPONENTS) -- enabled by vaporOS's
+#    scripts/build.sh, same requirement grep/sed will have.
+#  - tail -f needs xnotify_*(), which has no NuttX backend upstream;
+#    lib/portability.c provides a polling one (fstat + sleep), see there.
+CSRCS += toys/posix/head.c
+CSRCS += toys/posix/tail.c
+CSRCS += toys/posix/wc.c
+CSRCS += toys/posix/tee.c
+CSRCS += toys/posix/cut.c
+CSRCS += toys/posix/uniq.c
+CSRCS += toys/posix/sort.c
+CSRCS += toys/other/yes.c
 
 # toybox's own main.c is compiled as a plain CSRCS file, not MAINSRC --
 # its own "int main(argc, argv)" is left completely unrenamed (a
