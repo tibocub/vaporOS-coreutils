@@ -1,5 +1,25 @@
+struct expr_data {
+  char **tok, *delete;
+};
+
+struct tr_data {
+  short *map;
+  int len1, len2;
+};
+
 struct basename_data {
   char *s;
+};
+
+struct chmod_data {
+  char *mode;
+};
+
+struct cmp_data {
+  long n;
+
+  int fd;
+  char *name;
 };
 
 struct cp_data {
@@ -31,10 +51,31 @@ struct cut_data {
   regex_t reg;
 };
 
+struct date_data {
+  char *s, *r, *I, *D, *d;
+
+  unsigned nano;
+};
+
+struct grep_data {
+  long m, A, B, C;
+  struct arg_list *f, *e, *M, *S, *exclude_dir;
+  char *color;
+
+  char *purple, *cyan, *red, *green, *grey;
+  struct double_list *reg;
+  int found, tried, delim;
+  struct arg_list **fixed;
+};
+
 struct head_data {
   long c, n;
 
   int file_no;
+};
+
+struct ln_data {
+  char *t;
 };
 
 struct ls_data {
@@ -49,6 +90,21 @@ struct ls_data {
 
 struct mkdir_data {
   char *m, *Z;
+};
+
+struct sed_data {
+  char *i;
+  struct arg_list *f, *e;
+
+  // processed pattern list
+  struct double_list *pattern;
+
+  char *nextline, *remember, *tarxform;
+  void *restart, *lastregex;
+  long nextlen, rememberlen, count;
+  int fdout, noeol;
+  unsigned xx, tarxlen, xflags;
+  char delim, xftype;
 };
 
 struct sort_data {
@@ -93,12 +149,20 @@ struct wc_data {
   unsigned long totals[5];
 };
 extern union global_union {
+	struct expr_data expr;
+	struct tr_data tr;
 	struct basename_data basename;
+	struct chmod_data chmod;
+	struct cmp_data cmp;
 	struct cp_data cp;
 	struct cut_data cut;
+	struct date_data date;
+	struct grep_data grep;
 	struct head_data head;
+	struct ln_data ln;
 	struct ls_data ls;
 	struct mkdir_data mkdir;
+	struct sed_data sed;
 	struct sort_data sort;
 	struct tail_data tail;
 	struct tee_data tee;

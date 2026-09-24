@@ -61,25 +61,25 @@ nothing yet - all current commands come from toybox or nsh
 - [x] head
 - [x] tail
 - [x] cut
-- [ ] ln
+- [x] ln (hard/sym links: ENOSYS on the sim's FAT /tmp)
 - [ ] acpi
-- [ ] arch
+- [x] arch
 - [ ] blkdiscard
 - [ ] blkid
 - [ ] blockdev
 - [ ] cal
 - [ ] chattr
 - [ ] chgrp
-- [ ] chmod
+- [x] chmod (ENOSYS on the sim's FAT /tmp)
 - [ ] chown
 - [ ] chroot
 - [ ] chrt
 - [ ] clear
-- [ ] cmp
+- [x] cmp
 - [ ] comm
 - [ ] cpio
 - [ ] cut
-- [ ] date
+- [x] date
 - [ ] dd
 - [ ] devmem
 - [ ] df
@@ -87,13 +87,13 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] dmesg
 - [ ] dos2unix
 - [ ] du
-- [ ] egrep
+- [x] egrep
 - [ ] env
 - [ ] expand
-- [ ] expr
+- [x] expr
 - [ ] fallocate
 - [ ] false
-- [ ] fgrep
+- [x] fgrep
 - [ ] file
 - [ ] flock
 - [ ] fmt
@@ -103,7 +103,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] fsync
 - [ ] getconf
 - [ ] getopt
-- [ ] grep
+- [x] grep
 - [ ] groups
 - [ ] gunzip
 - [ ] gzip
@@ -182,7 +182,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] rmdir
 - [ ] rmmod
 - [ ] rtcwake
-- [ ] sed
+- [x] sed
 - [ ] seq
 - [ ] setfattr
 - [ ] setsid
@@ -221,7 +221,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] tunctl
 - [ ] ulimit
 - [ ] umount
-- [ ] uname
+- [x] uname
 - [x] uniq
 - [ ] unix2dos
 - [ ] unlink
@@ -242,6 +242,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] xargs
 - [ ] xxd
 - [x] yes
+- [x] tr
 - [ ] zcat
 
 ## NSH PORTS

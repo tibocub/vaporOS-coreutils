@@ -7,7 +7,7 @@ lines = [l.rstrip("\n") for l in open(sys.argv[1]) if l.strip()]
 per = float(sys.argv[2]) if len(sys.argv) > 2 else 0.7
 import re as _re
 MAPPED = lines
-cmds = ["vaporshell", "cd /tmp", "rm -f w.txt big2.txt f.txt n.txt nonl.txt empty.txt c.txt s.txt u1.txt big.txt b1.txt b2.txt o.txt t1.txt t2.txt t3.txt sorted.txt"] + MAPPED
+cmds = ["vaporshell", "cd /tmp", "rm -rf gd", "rm -f cp-copy.txt g.txt g2.txt hard.txt sym.txt cm.txt w.txt big2.txt f.txt n.txt nonl.txt empty.txt c.txt s.txt u1.txt big.txt b1.txt b2.txt o.txt t1.txt t2.txt t3.txt sorted.txt"] + MAPPED
 out = run(cmds, boot=4.0, per=per, tail=3.0)
 out = re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', out).replace('\r', '')
 out = out.replace("vaporshell$ ", "\x01")

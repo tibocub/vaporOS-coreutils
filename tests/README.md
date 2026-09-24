@@ -14,7 +14,7 @@ python3 tests/sim_run.py tests/batch4.t 0.6 > /tmp/sim.out      # NUTTX_DIR=... 
 python3 tests/cmp.py /tmp/host.out /tmp/sim.out
 ```
 
-Files: `batch4.t` (head tail wc tee cut uniq sort, no pipelines) and
+Files: `batch4.t` (head tail wc tee cut uniq sort, no pipelines) `batch5.t` (grep egrep fgrep sed tr ln cmp expr date chmod; `ln`/`chmod` differ, see docs/porting-notes.md), and
 `pipes.t` (two tbx tasks running concurrently). Add a `.t` per batch.
 
 Known, expected difference: the reference build prints `(see "head --help")`

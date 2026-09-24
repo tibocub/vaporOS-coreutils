@@ -1,5 +1,5 @@
 config VAPOROS_TOYBOX
-	tristate "toybox -- vendored multicall, 27 applets so far (see docs/porting-notes.md)"
+	tristate "toybox -- vendored multicall, 39 applets so far (see docs/porting-notes.md)"
 	default n
 	---help---
 		Vendored toybox (codeberg.org/landley/toybox), patched for

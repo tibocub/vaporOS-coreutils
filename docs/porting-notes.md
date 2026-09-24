@@ -129,3 +129,45 @@ guessed), and where each is handled:
 - `cut -F`, and later grep/sed/expr, need `CONFIG_LIBC_REGEX`. NuttX's has
   no `REG_STARTEND`, so text with embedded NUL bytes is cut off at the NUL.
 - `seq` left out: upstream needs `TOYBOX_FLOAT`, which is off here.
+
+
+## Batch 5: grep egrep fgrep sed tr ln cmp uname arch expr date chmod
+
+Same workflow as batch 4 (`tests/batch5.t`, host toybox vs sim). Left out on
+purpose: find, xargs, env -- they need to run other programs (`xrun()`,
+`xexec()`), which has no fork()+exec() to sit on; that wants a
+posix_spawn-based helper of its own, so its own batch.
+
+Found by running on the sim, and where each is handled:
+
+- **lseek() on a pipe succeeds.** NuttX's `file_seek()` bumps a meaningless
+  offset for anything whose driver has no seek method (pipes, ptys, serial)
+  instead of failing with ESPIPE. grep's binary-file check (`read` 256 bytes,
+  `lseek` back, only "on lseekable files") therefore ate the start of every
+  piped input. `vapor_lseek()` in `nuttx-shims/vapor_libc.h` returns ESPIPE
+  for FIFOs, sockets and ttys.
+- **st_ino/st_dev are always 0.** No NuttX filesystem fills them in, so
+  `same_file()` was true for every pair: `cp a dir/a` failed with
+  "'dir/a' is 'a'" (already true for batch 3's cp/mv). cp.c uses
+  `vapor_same_node()` (lib/portability.c), which compares resolved paths
+  (`F_GETPATH` + `realpath`) when the stat data can't tell. Still to do:
+  `test -ef`, `tail -F`'s dev/ino check.
+- **tr indexed a table with a signed char.** Bytes >= 0x80 (always for
+  `tr -c`, and any UTF-8 input) hit `TT.map[-128..-1]`; on NuttX that corrupted
+  the heap and hung the whole sim, only after an earlier tr had run. Casts to
+  unsigned char (also reported upstream-worthy). tr also spun forever on a
+  read() error; now exits.
+- **uname walked `struct utsname` in equal strides.** NuttX's fields have
+  different sizes, so `uname -a` was garbage and `-m` printed the version.
+  Fields are indexed by name now.
+- **strftime() has no %Z.** `date` printed an empty zone and `date +%Z`
+  failed; `nx_strftime()` in date.c expands it from `tm_zone`/`tzname`.
+- **ln and chmod fail with ENOSYS** ("Invalid system call number") on the
+  sim's FAT `/tmp`: no hard links, no symlinks, no permission bits there.
+  Not worked around; the applets report the error. Not checked on hostfs.
+- vaporshell's tbx command table (`vaporshell/dispatch.c`) must list every new
+  applet, or it answers "command not found".
+
+Expected differences in `tests/batch5.t`: the `ln` and `chmod` blocks (above)
+and `chmod`'s usage message (no help text compiled in).
+

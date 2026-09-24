@@ -106,6 +106,20 @@ CSRCS += toys/posix/uniq.c
 CSRCS += toys/posix/sort.c
 CSRCS += toys/other/yes.c
 
+# Batch 5: grep egrep fgrep sed tr ln cmp uname arch expr date chmod.
+# grep/sed/expr use regcomp()/regexec() (CONFIG_LIBC_REGEX, same as cut -F).
+# find/xargs/env are NOT here on purpose: they need to run other programs
+# (xrun()/xexec()), which has no fork()+exec() to build on -- own batch.
+CSRCS += toys/posix/grep.c
+CSRCS += toys/posix/sed.c
+CSRCS += toys/pending/tr.c
+CSRCS += toys/posix/ln.c
+CSRCS += toys/posix/cmp.c
+CSRCS += toys/posix/uname.c
+CSRCS += toys/pending/expr.c
+CSRCS += toys/posix/date.c
+CSRCS += toys/posix/chmod.c
+
 # toybox's own main.c is compiled as a plain CSRCS file, not MAINSRC --
 # its own "int main(argc, argv)" is left completely unrenamed (a
 # normal, ordinary, un-exported function named "main"), never called

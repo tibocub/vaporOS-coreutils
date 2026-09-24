@@ -19,18 +19,18 @@
 #define CFG_CHOWN 0
 #define USE_CHOWN(...)
 #define SKIP_CHOWN(...) __VA_ARGS__
-#define CFG_CHMOD 0
-#define USE_CHMOD(...)
-#define SKIP_CHMOD(...) __VA_ARGS__
+#define CFG_CHMOD 1
+#define USE_CHMOD(...) __VA_ARGS__
+#define SKIP_CHMOD(...)
 #define CFG_CKSUM 0
 #define USE_CKSUM(...)
 #define SKIP_CKSUM(...) __VA_ARGS__
 #define CFG_CRC32 0
 #define USE_CRC32(...)
 #define SKIP_CRC32(...) __VA_ARGS__
-#define CFG_CMP 0
-#define USE_CMP(...)
-#define SKIP_CMP(...) __VA_ARGS__
+#define CFG_CMP 1
+#define USE_CMP(...) __VA_ARGS__
+#define SKIP_CMP(...)
 #define CFG_COMM 0
 #define USE_COMM(...)
 #define SKIP_COMM(...) __VA_ARGS__
@@ -49,9 +49,9 @@
 #define CFG_CUT 1
 #define USE_CUT(...) __VA_ARGS__
 #define SKIP_CUT(...)
-#define CFG_DATE 0
-#define USE_DATE(...)
-#define SKIP_DATE(...) __VA_ARGS__
+#define CFG_DATE 1
+#define USE_DATE(...) __VA_ARGS__
+#define SKIP_DATE(...)
 #define CFG_DD 0
 #define USE_DD(...)
 #define SKIP_DD(...) __VA_ARGS__
@@ -88,15 +88,15 @@
 #define CFG_GETCONF 0
 #define USE_GETCONF(...)
 #define SKIP_GETCONF(...) __VA_ARGS__
-#define CFG_GREP 0
-#define USE_GREP(...)
-#define SKIP_GREP(...) __VA_ARGS__
-#define CFG_EGREP 0
-#define USE_EGREP(...)
-#define SKIP_EGREP(...) __VA_ARGS__
-#define CFG_FGREP 0
-#define USE_FGREP(...)
-#define SKIP_FGREP(...) __VA_ARGS__
+#define CFG_GREP 1
+#define USE_GREP(...) __VA_ARGS__
+#define SKIP_GREP(...)
+#define CFG_EGREP 1
+#define USE_EGREP(...) __VA_ARGS__
+#define SKIP_EGREP(...)
+#define CFG_FGREP 1
+#define USE_FGREP(...) __VA_ARGS__
+#define SKIP_FGREP(...)
 #define CFG_HEAD 1
 #define USE_HEAD(...) __VA_ARGS__
 #define SKIP_HEAD(...)
@@ -124,9 +124,9 @@
 #define CFG_LINK 0
 #define USE_LINK(...)
 #define SKIP_LINK(...) __VA_ARGS__
-#define CFG_LN 0
-#define USE_LN(...)
-#define SKIP_LN(...) __VA_ARGS__
+#define CFG_LN 1
+#define USE_LN(...) __VA_ARGS__
+#define SKIP_LN(...)
 #define CFG_LOGGER 0
 #define USE_LOGGER(...)
 #define SKIP_LOGGER(...) __VA_ARGS__
@@ -187,9 +187,9 @@
 #define CFG_RMDIR 1
 #define USE_RMDIR(...) __VA_ARGS__
 #define SKIP_RMDIR(...)
-#define CFG_SED 0
-#define USE_SED(...)
-#define SKIP_SED(...) __VA_ARGS__
+#define CFG_SED 1
+#define USE_SED(...) __VA_ARGS__
+#define SKIP_SED(...)
 #define CFG_SLEEP 1
 #define USE_SLEEP(...) __VA_ARGS__
 #define SKIP_SLEEP(...)
@@ -235,12 +235,12 @@
 #define CFG_ULIMIT 0
 #define USE_ULIMIT(...)
 #define SKIP_ULIMIT(...) __VA_ARGS__
-#define CFG_ARCH 0
-#define USE_ARCH(...)
-#define SKIP_ARCH(...) __VA_ARGS__
-#define CFG_UNAME 0
-#define USE_UNAME(...)
-#define SKIP_UNAME(...) __VA_ARGS__
+#define CFG_ARCH 1
+#define USE_ARCH(...) __VA_ARGS__
+#define SKIP_ARCH(...)
+#define CFG_UNAME 1
+#define USE_UNAME(...) __VA_ARGS__
+#define SKIP_UNAME(...)
 #define CFG_UNIQ 1
 #define USE_UNIQ(...) __VA_ARGS__
 #define SKIP_UNIQ(...)
@@ -310,9 +310,9 @@
 #define CFG_DUMPLEASES 0
 #define USE_DUMPLEASES(...)
 #define SKIP_DUMPLEASES(...) __VA_ARGS__
-#define CFG_EXPR 0
-#define USE_EXPR(...)
-#define SKIP_EXPR(...) __VA_ARGS__
+#define CFG_EXPR 1
+#define USE_EXPR(...) __VA_ARGS__
+#define SKIP_EXPR(...)
 #define CFG_FDISK 0
 #define USE_FDISK(...)
 #define SKIP_FDISK(...) __VA_ARGS__
@@ -478,9 +478,9 @@
 #define CFG_TFTPD 0
 #define USE_TFTPD(...)
 #define SKIP_TFTPD(...) __VA_ARGS__
-#define CFG_TR 0
-#define USE_TR(...)
-#define SKIP_TR(...) __VA_ARGS__
+#define CFG_TR 1
+#define USE_TR(...) __VA_ARGS__
+#define SKIP_TR(...)
 #define CFG_TRACEROUTE 0
 #define USE_TRACEROUTE(...)
 #define SKIP_TRACEROUTE(...) __VA_ARGS__
