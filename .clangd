@@ -1,0 +1,58 @@
+# clangd config for the IDE only -- the real build is NuttX's (see the
+# Makefile). Mirrors the include flags NuttX passes when it compiles this
+# directory, so `#include "toys.h"`, <nuttx/config.h> etc. resolve and
+# NuttX's own headers win over the host's.
+#
+# Expects the workspace layout setup.sh creates: this repo, nuttx/ and
+# nuttx-apps/ are siblings. NuttX's generated headers (nuttx/config.h and
+# friends) only exist once nuttx has been configured/built once.
+#
+# Why three fragments: clangd resolves a relative -I against the directory
+# of the file being edited, not against this file, so the way back to the
+# repo root (and on to ../nuttx) depends on how deep the file is.
+CompileFlags:
+  Add:
+    - -xc
+    - -std=gnu11
+    - -D__NuttX__
+    # Drop the host's /usr/include (glibc) but keep clang's own builtin
+    # headers (stdarg.h, stddef.h, ...); same idea as the -nostdinc the
+    # build uses (see vapor-nostdinc.mk).
+    - -nostdlibinc
+    - -U__linux__
+    - -U__unix__
+    - -U__APPLE__
+    - -U__FreeBSD__
+    - -U__NetBSD__
+    - -U__sun__
+    - -U_WIN32
+    - -U_AIX
+Diagnostics:
+  UnusedIncludes: None
+---
+If:
+  PathMatch: "[^/]+[.][ch]"
+CompileFlags:
+  Add:
+    - -I.
+    - -I./nuttx-shims
+    - -isystem../nuttx/include
+    - -I../nuttx-apps/include
+---
+If:
+  PathMatch: "(lib|nsh-ports|nuttx-shims|generated)/.*"
+CompileFlags:
+  Add:
+    - -I..
+    - -I../nuttx-shims
+    - -isystem../../nuttx/include
+    - -I../../nuttx-apps/include
+---
+If:
+  PathMatch: "toys/[^/]+/.*"
+CompileFlags:
+  Add:
+    - -I../..
+    - -I../../nuttx-shims
+    - -isystem../../../nuttx/include
+    - -I../../../nuttx-apps/include

@@ -11,3 +11,7 @@ Make.dep
 *.o
 *.gcno
 *.gcda
+
+# host tooling caches
+__pycache__/
+.cache/
