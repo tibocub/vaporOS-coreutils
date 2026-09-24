@@ -5,6 +5,10 @@
  */
 
 #include "toys.h"
+#ifdef __NuttX__
+#include <spawn.h>
+#include "nsh-ports/nsh-ports.h"
+#endif
 
 #ifdef __NuttX__
 #include <sys/sysmacros.h>
@@ -312,6 +316,65 @@ void vapor_refresh_fd(int fd, char *path)
   if (pos<0 || (nfd = open(path, O_RDONLY))<0) return;
   if (lseek(nfd, pos, SEEK_SET) == pos) dup2(nfd, fd);
   close(nfd);
+}
+
+// environ plus/replacing one "NAME=value" entry, as a new NULL-terminated array.
+static char **vapor_env_with(char **base, char *kv)
+{
+  char **env, **e;
+  size_t n = 0, nlen = strcspn(kv, "=");
+
+  for (e = base; e && *e; e++) n++;
+  env = xmalloc((n+2)*sizeof(*env));
+  for (n = 0, e = base; e && *e; e++)
+    if (strncmp(*e, kv, nlen) || (*e)[nlen] != '=') env[n++] = *e;
+  env[n++] = kv;
+  env[n] = 0;
+
+  return env;
+}
+
+// Like vaporshell's vs_plat_spawn(): an installed program of that name wins,
+// and only if there is none is it looked up as a tbx command (a toybox
+// applet or an nsh-port), run as `tbx <name> <args...>`.
+pid_t vapor_spawn(char **argv, struct vapor_spawn_opts *o)
+{
+  posix_spawn_file_actions_t fa;
+  char **envp = o->envp ? o->envp : environ, **mine = 0, **tbx;
+  pid_t pid = -1;
+  int rc, i, n;
+
+  if (o->setenv_kv) envp = mine = vapor_env_with(envp, o->setenv_kv);
+  if ((rc = posix_spawn_file_actions_init(&fa))) goto done;
+  if (o->in_path) {
+    rc = posix_spawn_file_actions_addopen(&fa, 0, o->in_path, O_RDONLY, 0);
+  } else if (o->in > 0) rc = posix_spawn_file_actions_adddup2(&fa, o->in, 0);
+  if (!rc && o->out > 1) rc = posix_spawn_file_actions_adddup2(&fa, o->out, 1);
+  for (i = 0; !rc && i < o->nclose; i++)
+    rc = posix_spawn_file_actions_addclose(&fa, o->close_fds[i]);
+  if (rc) goto destroy;
+
+  rc = posix_spawnp(&pid, o->prog ? o->prog : *argv, &fa, NULL, argv, envp);
+  if (rc == ENOENT && (toy_find(*argv) || nshports_has(*argv))) {
+    for (n = 0; argv[n]; n++);
+    tbx = xmalloc((n+2)*sizeof(*tbx));
+    tbx[0] = "tbx";
+    memcpy(tbx+1, argv, (n+1)*sizeof(*tbx));
+    rc = posix_spawnp(&pid, "tbx", &fa, NULL, tbx, envp);
+    free(tbx);
+  }
+
+destroy:
+  posix_spawn_file_actions_destroy(&fa);
+done:
+  free(mine);
+  if (rc) {
+    errno = rc;
+
+    return -1;
+  }
+
+  return pid;
 }
 
 // Absolute, resolved path of `name` looked up relative to directory fd `dfd`

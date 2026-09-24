@@ -46,4 +46,19 @@ static inline off_t vapor_lseek(int fd, off_t off, int whence)
 }
 
 #define lseek(fd, off, whence) vapor_lseek(fd, off, whence)
+// `environ` is a function call on NuttX (get_environ_ptr(), see <stdlib.h>) and
+// it returns NULL, not an empty array, while a task has no environment
+// variables at all -- which is what `env -i cmd` gives cmd. toybox loops
+// `for (e = environ; *e; e++)` everywhere, so printenv/env crashed the whole
+// sim on the NULL. Hand out a real empty array instead.
+static inline char **vapor_environ(void)
+{
+  static char *empty[1];
+  char **e = get_environ_ptr();
+
+  return e ? e : empty;
+}
+
+#undef environ
+#define environ vapor_environ()
 #endif

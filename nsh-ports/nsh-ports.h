@@ -23,5 +23,6 @@
  */
 
 int nshports_dispatch(int argc, char *argv[]);
+int nshports_has(const char *name);
 
 #endif

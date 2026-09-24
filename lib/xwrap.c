@@ -231,7 +231,22 @@ void xexec(char **argv)
   // Only recurse to builtin when we have multiplexer and !vfork context.
   if (CFG_TOYBOX && !CFG_TOYBOX_NORECURSE)
     if (toys.stacktop && !strchr(*argv, '/')) toy_exec(argv);
+#ifdef __NuttX__
+  {
+    // exec() would replace this task; NuttX has no such thing, so run it as
+    // a child and exit with its status (same as what exec would result in).
+    struct vapor_spawn_opts o = {-1, -1, 0, 0, 0, 0};
+    pid_t pid = vapor_spawn(argv, &o);
+
+    if (pid != -1) {
+      toys.exitval = xwaitpid(pid);
+      if (!toys.stacktop) _exit(toys.exitval);
+      xexit();
+    }
+  }
+#else
   execvp(argv[0], argv);
+#endif
 
   toys.exitval = 126+(errno == ENOENT);
   perror_msg("exec %s", argv[0]);
@@ -246,6 +261,54 @@ void xexec(char **argv)
 //           If -1, replace with pipe handle connected to stdin/stdout.
 //           NULL treated as {0, 1}, I.E. leave stdin/stdout as is
 // return: pid of child process
+#ifdef __NuttX__
+// No fork(): the child is spawned directly, so `argv` is required and the
+// `callback` (code to run in the child before exec) can't be supported.
+pid_t xpopen_setup(char **argv, int *pipes, void (*callback)(char **argv))
+{
+  int cnp[4], close_fds[6], nclose = 0, pid, i;
+  struct vapor_spawn_opts o = {-1, -1, 0, 0, 0, 0};
+
+  if (!argv || callback) error_exit("xpopen: can't re-run self without fork");
+
+  memset(cnp, 0, sizeof(cnp));
+  if (pipes) for (i = 0; i < 2; i++)
+    if (pipes[i]==-1 && pipe(cnp+(2*i))) perror_exit("pipe");
+
+  // Same layout as the fork() version: cnp[0]=child stdin, cnp[1]=our write
+  // end, cnp[2]=our read end, cnp[3]=child stdout; nonzero means "made".
+  if (pipes) {
+    o.in = cnp[1] ? cnp[0] : pipes[0];
+    o.out = cnp[2] ? cnp[3] : pipes[1];
+    for (i = 0; i < 4; i++) if (cnp[i]) close_fds[nclose++] = cnp[i];
+    if (!cnp[1] && pipes[0]>0) close_fds[nclose++] = pipes[0];
+    if (!cnp[2] && pipes[1]>1) close_fds[nclose++] = pipes[1];
+    o.close_fds = close_fds;
+    o.nclose = nclose;
+  }
+
+  if ((pid = vapor_spawn(argv, &o)) == -1) {
+    toys.exitval = 126+(errno == ENOENT);
+    perror_msg("exec %s", argv[0]);
+    pid = -(toys.exitval)-2;
+    toys.exitval = 0;
+  }
+
+  // Parent: close the child's ends, hand back ours.
+  if (pipes) {
+    if (cnp[1]) {
+      pipes[0] = cnp[1];
+      close(cnp[0]);
+    }
+    if (cnp[2]) {
+      pipes[1] = cnp[2];
+      close(cnp[3]);
+    }
+  }
+
+  return pid;
+}
+#else
 pid_t xpopen_setup(char **argv, int *pipes, void (*callback)(char **argv))
 {
   int cestnepasun[4], pid;
@@ -331,6 +394,8 @@ pid_t xpopen_setup(char **argv, int *pipes, void (*callback)(char **argv))
   return pid;
 }
 
+#endif
+
 pid_t xpopen_both(char **argv, int *pipes)
 {
   return xpopen_setup(argv, pipes, 0);
@@ -341,6 +406,12 @@ pid_t xpopen_both(char **argv, int *pipes)
 int xwaitpid(pid_t pid)
 {
   int status = 127<<8;
+
+#ifdef __NuttX__
+  // xpopen_setup() returns -(exitcode+2) when spawning failed (the fork()
+  // version would have a child that printed the error and exited 126/127).
+  if (pid < -1) return -(pid+2);
+#endif
 
   while (-1 == waitpid(pid, &status, 0) && errno == EINTR) errno = 0;
 

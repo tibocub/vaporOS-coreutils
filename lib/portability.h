@@ -410,6 +410,29 @@ int xnotify_add(struct xnotify *not, int fd, char *path);
 int xnotify_wait(struct xnotify *not, char **path);
 #ifdef __NuttX__
 void vapor_refresh_fd(int fd, char *path);
+// Arguments handed to a spawned task are copied onto that new task's stack
+// (nxtask_setup_stackargs), and tbx tasks have a small one, so a command line
+// can only be a fraction of it. Used instead of sysconf(_SC_ARG_MAX), which
+// is 4096 and left xargs' "ARG_MAX - environment - 4096" negative.
+#ifdef CONFIG_VAPOROS_TOYBOX_STACKSIZE
+#define VAPOR_ARGS_MAX (CONFIG_VAPOROS_TOYBOX_STACKSIZE/4)
+#else
+#define VAPOR_ARGS_MAX 512
+#endif
+
+// Start a program without fork()+exec() (NuttX has no real fork): what
+// xpopen_setup(), xexec(), xargs and find -exec are built on.
+struct vapor_spawn_opts {
+  int in, out;             // >0: dup2() this fd onto the child's stdin/stdout
+  char *in_path;           // if set: open this path as the child's stdin instead
+  char *setenv_kv;         // if set: "NAME=value" added to the child's environment
+  int *close_fds, nclose;  // fds to close in the child (e.g. the parent's pipe ends)
+  char **envp;             // if set: the child's whole environment (else: ours)
+  char *prog;              // if set: program to run when it isn't argv[0]
+};
+// Returns the child's pid, or -1 with errno set (ENOENT if not found).
+pid_t vapor_spawn(char **argv, struct vapor_spawn_opts *o);
+
 struct stat;
 int vapor_same_node(struct stat *a, int fda, char *na,
                     struct stat *b, int fdb, char *nb);

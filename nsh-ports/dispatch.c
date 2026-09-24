@@ -36,3 +36,22 @@ int nshports_dispatch(int argc, char *argv[])
 
   return -1;
 }
+
+/* True if `name` is one of the commands above (nshports_dispatch() would
+ * run it). Lets vapor_spawn() know a name is served by tbx.
+ */
+
+int nshports_has(const char *name)
+{
+  size_t i;
+
+  for (i = 0; i < NSHPORTS_COUNT; i++)
+    {
+      if (strcmp(name, g_nshports[i].name) == 0)
+        {
+          return 1;
+        }
+    }
+
+  return 0;
+}

@@ -536,6 +536,13 @@ int anystr(char *s, char **try)
 
 int same_file(struct stat *st1, struct stat *st2)
 {
+#ifdef __NuttX__
+  // No NuttX filesystem fills in st_ino/st_dev (see vapor_same_node() in
+  // portability.c), so "equal" would mean nothing: find called every
+  // subdirectory a loop. Unknown must not read as "same"; callers that need
+  // a real answer (cp) compare paths instead.
+  if (!st1->st_ino && !st2->st_ino && !st1->st_dev && !st2->st_dev) return 0;
+#endif
   return st1->st_ino==st2->st_ino && st1->st_dev==st2->st_dev;
 }
 
