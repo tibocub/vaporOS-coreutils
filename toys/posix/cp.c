@@ -193,8 +193,16 @@ static int cp_node(struct dirtree *try)
 
     // Detect recursive copies via repeated top node (cp -R .. .) or
     // identical source/target (fun with hardlinks).
+#ifdef __NuttX__
+    // NuttX has no st_ino/st_dev: see vapor_same_node() in lib/portability.c
+    if ((vapor_same_node(&TT.top, AT_FDCWD, TT.destname, &try->st, tfd,
+                         try->name) && (catch = TT.destname))
+        || (!fstatat(cfd, catch, &cst, 0) &&
+            vapor_same_node(&cst, cfd, catch, &try->st, tfd, try->name)))
+#else
     if ((same_file(&TT.top, &try->st) && (catch = TT.destname))
         || (!fstatat(cfd, catch, &cst, 0) && same_file(&cst, &try->st)))
+#endif
     {
       error_msg("'%s' is '%s'", catch, err = dirtree_path(try, 0));
       free(err);

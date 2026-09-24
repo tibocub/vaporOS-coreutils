@@ -314,6 +314,41 @@ void vapor_refresh_fd(int fd, char *path)
   close(nfd);
 }
 
+// Absolute, resolved path of `name` looked up relative to directory fd `dfd`
+// (or the cwd for AT_FDCWD). 0 on success.
+static int vapor_fd_realpath(int dfd, char *name, char *out)
+{
+  char base[PATH_MAX], full[PATH_MAX];
+
+  if (*name == '/') snprintf(full, sizeof(full), "%s", name);
+  else {
+    if (dfd == AT_FDCWD ? !getcwd(base, sizeof(base))
+                        : fcntl(dfd, F_GETPATH, base)) return -1;
+    snprintf(full, sizeof(full), "%s/%s", base, name);
+  }
+
+  return !realpath(full, out);
+}
+
+// same_file() for two (dirfd, name) pairs. No NuttX filesystem fills in
+// st_ino or st_dev (FAT, hostfs, tmpfs, littlefs, romfs all leave them 0;
+// only pseudo-filesystem nodes get an inode number), so same_file() is true
+// for *every* pair of files there and cp/mv refused everything with
+// "'dst' is 'src'". When the stat data can't tell, compare resolved paths
+// instead: it can't see hard links to one file, but nothing on NuttX can
+// create one anyway.
+int vapor_same_node(struct stat *a, int fda, char *na,
+                    struct stat *b, int fdb, char *nb)
+{
+  char pa[PATH_MAX], pb[PATH_MAX];
+
+  if (a->st_ino || b->st_ino || a->st_dev || b->st_dev)
+    return same_file(a, b);
+
+  return !vapor_fd_realpath(fda, na, pa) && !vapor_fd_realpath(fdb, nb, pb)
+    && !strcmp(pa, pb);
+}
+
 // tail hands stdin over as "/proc/self/fd/0": not a real path here, so
 // those entries are only ever polled through their descriptor.
 static int xnotify_stat(struct xnotify *not, int i, struct stat *sb)

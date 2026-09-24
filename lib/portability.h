@@ -410,6 +410,9 @@ int xnotify_add(struct xnotify *not, int fd, char *path);
 int xnotify_wait(struct xnotify *not, char **path);
 #ifdef __NuttX__
 void vapor_refresh_fd(int fd, char *path);
+struct stat;
+int vapor_same_node(struct stat *a, int fda, char *na,
+                    struct stat *b, int fdb, char *nb);
 #endif
 
 int sig_to_num(char *s);
