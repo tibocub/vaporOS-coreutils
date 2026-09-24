@@ -1,5 +1,5 @@
 config VAPOROS_TOYBOX
-	tristate "toybox -- vendored multicall, 39 applets so far (see docs/porting-notes.md)"
+	tristate "toybox -- vendored multicall, 63 applets so far (see docs/porting-notes.md)"
 	default n
 	---help---
 		Vendored toybox (codeberg.org/landley/toybox), patched for
@@ -37,7 +37,10 @@ config VAPOROS_TOYBOX
 
 		Batch 4: added head, tail, wc, tee, cut, uniq, sort, yes. Needs
 		CONFIG_LIBC_REGEX (cut -F) and CONFIG_TLS_TASK_NELEM >= 1 (per-task
-		toybox globals), both set by vaporOS's scripts/build.sh. Still not
+		toybox globals), both set by vaporOS's scripts/build.sh. Batch 6: added find, xargs, env, nohup (spawn-based, see
+		lib/portability.c vapor_spawn()), comm, expand, fold, nl, od,
+		paste, split, tty, unlink, rev, tac, truncate, xxd, mktemp,
+		md5sum/sha*sum. Still not
 		the full ~218-command set. See the
 		Makefile in this directory for what expanding scope
 		actually requires (mainly:

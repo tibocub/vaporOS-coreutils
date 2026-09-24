@@ -31,9 +31,9 @@
 #define CFG_CMP 1
 #define USE_CMP(...) __VA_ARGS__
 #define SKIP_CMP(...)
-#define CFG_COMM 0
-#define USE_COMM(...)
-#define SKIP_COMM(...) __VA_ARGS__
+#define CFG_COMM 1
+#define USE_COMM(...) __VA_ARGS__
+#define SKIP_COMM(...)
 #define CFG_CP 1
 #define USE_CP(...) __VA_ARGS__
 #define SKIP_CP(...)
@@ -67,24 +67,24 @@
 #define CFG_ECHO 1
 #define USE_ECHO(...) __VA_ARGS__
 #define SKIP_ECHO(...)
-#define CFG_ENV 0
-#define USE_ENV(...)
-#define SKIP_ENV(...) __VA_ARGS__
-#define CFG_EXPAND 0
-#define USE_EXPAND(...)
-#define SKIP_EXPAND(...) __VA_ARGS__
+#define CFG_ENV 1
+#define USE_ENV(...) __VA_ARGS__
+#define SKIP_ENV(...)
+#define CFG_EXPAND 1
+#define USE_EXPAND(...) __VA_ARGS__
+#define SKIP_EXPAND(...)
 #define CFG_FALSE 1
 #define USE_FALSE(...) __VA_ARGS__
 #define SKIP_FALSE(...)
 #define CFG_FILE 0
 #define USE_FILE(...)
 #define SKIP_FILE(...) __VA_ARGS__
-#define CFG_FIND 0
-#define USE_FIND(...)
-#define SKIP_FIND(...) __VA_ARGS__
-#define CFG_FOLD 0
-#define USE_FOLD(...)
-#define SKIP_FOLD(...) __VA_ARGS__
+#define CFG_FIND 1
+#define USE_FIND(...) __VA_ARGS__
+#define SKIP_FIND(...)
+#define CFG_FOLD 1
+#define USE_FOLD(...) __VA_ARGS__
+#define SKIP_FOLD(...)
 #define CFG_GETCONF 0
 #define USE_GETCONF(...)
 #define SKIP_GETCONF(...) __VA_ARGS__
@@ -142,18 +142,18 @@
 #define CFG_NICE 0
 #define USE_NICE(...)
 #define SKIP_NICE(...) __VA_ARGS__
-#define CFG_NL 0
-#define USE_NL(...)
-#define SKIP_NL(...) __VA_ARGS__
-#define CFG_NOHUP 0
-#define USE_NOHUP(...)
-#define SKIP_NOHUP(...) __VA_ARGS__
-#define CFG_OD 0
-#define USE_OD(...)
-#define SKIP_OD(...) __VA_ARGS__
-#define CFG_PASTE 0
-#define USE_PASTE(...)
-#define SKIP_PASTE(...) __VA_ARGS__
+#define CFG_NL 1
+#define USE_NL(...) __VA_ARGS__
+#define SKIP_NL(...)
+#define CFG_NOHUP 1
+#define USE_NOHUP(...) __VA_ARGS__
+#define SKIP_NOHUP(...)
+#define CFG_OD 1
+#define USE_OD(...) __VA_ARGS__
+#define SKIP_OD(...)
+#define CFG_PASTE 1
+#define USE_PASTE(...) __VA_ARGS__
+#define SKIP_PASTE(...)
 #define CFG_PATCH 0
 #define USE_PATCH(...)
 #define SKIP_PATCH(...) __VA_ARGS__
@@ -196,9 +196,9 @@
 #define CFG_SORT 1
 #define USE_SORT(...) __VA_ARGS__
 #define SKIP_SORT(...)
-#define CFG_SPLIT 0
-#define USE_SPLIT(...)
-#define SKIP_SPLIT(...) __VA_ARGS__
+#define CFG_SPLIT 1
+#define USE_SPLIT(...) __VA_ARGS__
+#define SKIP_SPLIT(...)
 #define CFG_STRINGS 0
 #define USE_STRINGS(...)
 #define SKIP_STRINGS(...) __VA_ARGS__
@@ -229,9 +229,9 @@
 #define CFG_TSORT 0
 #define USE_TSORT(...)
 #define SKIP_TSORT(...) __VA_ARGS__
-#define CFG_TTY 0
-#define USE_TTY(...)
-#define SKIP_TTY(...) __VA_ARGS__
+#define CFG_TTY 1
+#define USE_TTY(...) __VA_ARGS__
+#define SKIP_TTY(...)
 #define CFG_ULIMIT 0
 #define USE_ULIMIT(...)
 #define SKIP_ULIMIT(...) __VA_ARGS__
@@ -244,9 +244,9 @@
 #define CFG_UNIQ 1
 #define USE_UNIQ(...) __VA_ARGS__
 #define SKIP_UNIQ(...)
-#define CFG_UNLINK 0
-#define USE_UNLINK(...)
-#define SKIP_UNLINK(...) __VA_ARGS__
+#define CFG_UNLINK 1
+#define USE_UNLINK(...) __VA_ARGS__
+#define SKIP_UNLINK(...)
 #define CFG_UUDECODE 0
 #define USE_UUDECODE(...)
 #define SKIP_UUDECODE(...) __VA_ARGS__
@@ -259,9 +259,9 @@
 #define CFG_WHO 0
 #define USE_WHO(...)
 #define SKIP_WHO(...) __VA_ARGS__
-#define CFG_XARGS 0
-#define USE_XARGS(...)
-#define SKIP_XARGS(...) __VA_ARGS__
+#define CFG_XARGS 1
+#define USE_XARGS(...) __VA_ARGS__
+#define SKIP_XARGS(...)
 #define CFG_ARP 0
 #define USE_ARP(...)
 #define SKIP_ARP(...) __VA_ARGS__
@@ -751,9 +751,9 @@
 #define CFG_RESET 0
 #define USE_RESET(...)
 #define SKIP_RESET(...) __VA_ARGS__
-#define CFG_REV 0
-#define USE_REV(...)
-#define SKIP_REV(...) __VA_ARGS__
+#define CFG_REV 1
+#define USE_REV(...) __VA_ARGS__
+#define SKIP_REV(...)
 #define CFG_RMMOD 0
 #define USE_RMMOD(...)
 #define SKIP_RMMOD(...) __VA_ARGS__
@@ -790,9 +790,9 @@
 #define CFG_SYSCTL 0
 #define USE_SYSCTL(...)
 #define SKIP_SYSCTL(...) __VA_ARGS__
-#define CFG_TAC 0
-#define USE_TAC(...)
-#define SKIP_TAC(...) __VA_ARGS__
+#define CFG_TAC 1
+#define USE_TAC(...) __VA_ARGS__
+#define SKIP_TAC(...)
 #define CFG_NPROC 0
 #define USE_NPROC(...)
 #define SKIP_NPROC(...) __VA_ARGS__
@@ -802,9 +802,9 @@
 #define CFG_TIMEOUT 0
 #define USE_TIMEOUT(...)
 #define SKIP_TIMEOUT(...) __VA_ARGS__
-#define CFG_TRUNCATE 0
-#define USE_TRUNCATE(...)
-#define SKIP_TRUNCATE(...) __VA_ARGS__
+#define CFG_TRUNCATE 1
+#define USE_TRUNCATE(...) __VA_ARGS__
+#define SKIP_TRUNCATE(...)
 #define CFG_TS 0
 #define USE_TS(...)
 #define SKIP_TS(...) __VA_ARGS__
@@ -838,9 +838,9 @@
 #define CFG_WHICH 1
 #define USE_WHICH(...) __VA_ARGS__
 #define SKIP_WHICH(...)
-#define CFG_XXD 0
-#define USE_XXD(...)
-#define SKIP_XXD(...) __VA_ARGS__
+#define CFG_XXD 1
+#define USE_XXD(...) __VA_ARGS__
+#define SKIP_XXD(...)
 #define CFG_YES 1
 #define USE_YES(...) __VA_ARGS__
 #define SKIP_YES(...)
@@ -907,30 +907,30 @@
 #define CFG_KILLALL 0
 #define USE_KILLALL(...)
 #define SKIP_KILLALL(...) __VA_ARGS__
-#define CFG_MD5SUM 0
-#define USE_MD5SUM(...)
-#define SKIP_MD5SUM(...) __VA_ARGS__
-#define CFG_SHA1SUM 0
-#define USE_SHA1SUM(...)
-#define SKIP_SHA1SUM(...) __VA_ARGS__
-#define CFG_SHA224SUM 0
-#define USE_SHA224SUM(...)
-#define SKIP_SHA224SUM(...) __VA_ARGS__
-#define CFG_SHA256SUM 0
-#define USE_SHA256SUM(...)
-#define SKIP_SHA256SUM(...) __VA_ARGS__
-#define CFG_SHA384SUM 0
-#define USE_SHA384SUM(...)
-#define SKIP_SHA384SUM(...) __VA_ARGS__
-#define CFG_SHA512SUM 0
-#define USE_SHA512SUM(...)
-#define SKIP_SHA512SUM(...) __VA_ARGS__
+#define CFG_MD5SUM 1
+#define USE_MD5SUM(...) __VA_ARGS__
+#define SKIP_MD5SUM(...)
+#define CFG_SHA1SUM 1
+#define USE_SHA1SUM(...) __VA_ARGS__
+#define SKIP_SHA1SUM(...)
+#define CFG_SHA224SUM 1
+#define USE_SHA224SUM(...) __VA_ARGS__
+#define SKIP_SHA224SUM(...)
+#define CFG_SHA256SUM 1
+#define USE_SHA256SUM(...) __VA_ARGS__
+#define SKIP_SHA256SUM(...)
+#define CFG_SHA384SUM 1
+#define USE_SHA384SUM(...) __VA_ARGS__
+#define SKIP_SHA384SUM(...)
+#define CFG_SHA512SUM 1
+#define USE_SHA512SUM(...) __VA_ARGS__
+#define SKIP_SHA512SUM(...)
 #define CFG_MKNOD 0
 #define USE_MKNOD(...)
 #define SKIP_MKNOD(...) __VA_ARGS__
-#define CFG_MKTEMP 0
-#define USE_MKTEMP(...)
-#define SKIP_MKTEMP(...) __VA_ARGS__
+#define CFG_MKTEMP 1
+#define USE_MKTEMP(...) __VA_ARGS__
+#define SKIP_MKTEMP(...)
 #define CFG_MOUNT 0
 #define USE_MOUNT(...)
 #define SKIP_MOUNT(...) __VA_ARGS__

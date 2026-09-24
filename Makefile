@@ -120,6 +120,29 @@ CSRCS += toys/pending/expr.c
 CSRCS += toys/posix/date.c
 CSRCS += toys/posix/chmod.c
 
+# Batch 6: find xargs env (they run other programs, through vapor_spawn() in
+# lib/portability.c -- see docs/porting-notes.md), nohup, and a set of
+# self-contained text/file utilities.
+CSRCS += toys/posix/find.c
+CSRCS += toys/posix/xargs.c
+CSRCS += toys/posix/env.c
+CSRCS += toys/posix/nohup.c
+CSRCS += toys/posix/comm.c
+CSRCS += toys/posix/expand.c
+CSRCS += toys/posix/fold.c
+CSRCS += toys/posix/nl.c
+CSRCS += toys/posix/od.c
+CSRCS += toys/posix/paste.c
+CSRCS += toys/posix/split.c
+CSRCS += toys/posix/tty.c
+CSRCS += toys/posix/unlink.c
+CSRCS += toys/other/rev.c
+CSRCS += toys/other/tac.c
+CSRCS += toys/other/truncate.c
+CSRCS += toys/other/xxd.c
+CSRCS += toys/lsb/mktemp.c
+CSRCS += toys/lsb/md5sum.c
+
 # toybox's own main.c is compiled as a plain CSRCS file, not MAINSRC --
 # its own "int main(argc, argv)" is left completely unrenamed (a
 # normal, ordinary, un-exported function named "main"), never called

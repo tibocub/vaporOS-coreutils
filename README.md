@@ -57,7 +57,7 @@ nothing yet - all current commands come from toybox or nsh
 - [x] dirname
 - [x] sleep
 - [x] which
-- [ ] find
+- [x] find
 - [x] head
 - [x] tail
 - [x] cut
@@ -76,7 +76,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] chrt
 - [ ] clear
 - [x] cmp
-- [ ] comm
+- [x] comm
 - [ ] cpio
 - [ ] cut
 - [x] date
@@ -88,8 +88,8 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] dos2unix
 - [ ] du
 - [x] egrep
-- [ ] env
-- [ ] expand
+- [x] env
+- [x] expand
 - [x] expr
 - [ ] fallocate
 - [ ] false
@@ -133,13 +133,13 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] lsusb
 - [ ] makedevs
 - [ ] mcookie
-- [ ] md5sum
+- [x] md5sum
 - [ ] mkdir
 - [ ] mkfifo
 - [ ] mknod
 - [ ] mkpasswd
 - [ ] mkswap
-- [ ] mktemp
+- [x] mktemp
 - [ ] modinfo
 - [ ] mount
 - [ ] mountpoint
@@ -148,14 +148,14 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] netcat
 - [ ] netstat
 - [ ] nice
-- [ ] nl
-- [ ] nohup
+- [x] nl
+- [x] nohup
 - [ ] nproc
 - [ ] nsenter
-- [ ] od
+- [x] od
 - [ ] partprobe
 - [ ] passwd
-- [ ] paste
+- [x] paste
 - [ ] patch
 - [ ] pgrep
 - [ ] pidof
@@ -176,7 +176,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] reboot
 - [ ] renice
 - [ ] reset
-- [ ] rev
+- [x] rev
 - [ ] rfkill
 - [ ] rm
 - [ ] rmdir
@@ -186,17 +186,17 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] seq
 - [ ] setfattr
 - [ ] setsid
-- [ ] sha1sum
-- [ ] sha224sum
-- [ ] sha256sum
-- [ ] sha384sum
+- [x] sha1sum
+- [x] sha224sum
+- [x] sha256sum
+- [x] sha384sum
 - [ ] sha3sum
-- [ ] sha512sum
+- [x] sha512sum
 - [ ] shred
 - [ ] sleep
 - [ ] sntp
 - [x] sort
-- [ ] split
+- [x] split
 - [ ] stat
 - [ ] strings
 - [ ] su
@@ -205,7 +205,7 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] switch_root
 - [ ] sync
 - [ ] sysctl
-- [ ] tac
+- [x] tac
 - [ ] tail
 - [ ] tar
 - [ ] taskset
@@ -216,15 +216,15 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] top
 - [ ] touch
 - [ ] true
-- [ ] truncate
-- [ ] tty
+- [x] truncate
+- [x] tty
 - [ ] tunctl
 - [ ] ulimit
 - [ ] umount
 - [x] uname
 - [x] uniq
 - [ ] unix2dos
-- [ ] unlink
+- [x] unlink
 - [ ] unshare
 - [ ] uptime
 - [ ] usleep
@@ -239,8 +239,8 @@ nothing yet - all current commands come from toybox or nsh
 - [ ] which
 - [ ] who
 - [ ] whoami
-- [ ] xargs
-- [ ] xxd
+- [x] xargs
+- [x] xxd
 - [x] yes
 - [x] tr
 - [ ] zcat

@@ -171,3 +171,57 @@ Found by running on the sim, and where each is handled:
 Expected differences in `tests/batch5.t`: the `ln` and `chmod` blocks (above)
 and `chmod`'s usage message (no help text compiled in).
 
+
+## Batch 6: find xargs env nohup + text/file utilities
+
+`tests/batch6.t` (103 commands, host toybox vs sim: no differences). Added:
+find xargs env nohup comm expand fold nl od paste split tty unlink rev tac
+truncate xxd mktemp md5sum sha1sum sha224sum sha256sum sha384sum sha512sum.
+
+**Running other programs without fork()+exec().** find -exec, xargs, env and
+`xpopen_setup()`/`xrun()` all assumed fork()/vfork() plus exec(). New
+`vapor_spawn()` (lib/portability.c) does it with `posix_spawnp()`: an installed
+program of that name wins (same rule as vaporshell's `vs_plat_spawn()`), and
+only on ENOENT is the name looked up as a tbx command (toybox applet or
+nsh-port) and run as `tbx <name> <args>`. Redirections go through
+`posix_spawn_file_actions_*` (checked against NuttX's `task_spawnparms.c`:
+actions run in order on the child's fd list, open/dup2/close as in POSIX).
+Where it is used:
+
+- `xpopen_setup()` (so `xrun`, `xpopen`, `xrunread`): NuttX version in
+  lib/xwrap.c. It needs `argv`; the "re-run myself in the child" and
+  `callback` uses can't exist without fork and error out (nothing in the
+  applets ported so far uses them; `timeout` does, so it is not ported). A
+  failed spawn is reported like the fork()ed child would have (error message,
+  exit status 126/127, returned as a negative "pid" that `xwaitpid()`
+  understands).
+- `xexec()`: no exec() that replaces the task on NuttX, so it runs the command
+  as a child and exits with its status.
+- xargs (own spawn call: stdin from /dev/null or /dev/tty, slot variable) and
+  env (the whole environment array, `-i`).
+
+Problems found on the sim:
+
+- **Arguments live on the new task's stack.** NuttX copies argv onto the
+  spawned task's stack (`nxtask_setup_stackargs`), and tbx's stack is small.
+  `sysconf(_SC_ARG_MAX)` is 4096, which made xargs' `ARG_MAX - environment -
+  4096` negative ("command too long" for everything). find and xargs use
+  `VAPOR_ARGS_MAX` (a quarter of the tbx stack size) instead; longer input is
+  split into several runs, as POSIX allows.
+- **`open(".")` fails** (trailing "." is never resolved, see lib/dirtree.c):
+  find -exec opens the start directory; it now uses the real cwd path.
+- **`same_file()` was true for everything** (no st_ino/st_dev, see batch 5):
+  find called every subdirectory a "loop". `same_file()` now says "no" when
+  both sides have no inode information; cp keeps using `vapor_same_node()`.
+  Not fixed: `find -samefile`/`-inum`, `test -ef`.
+- **`environ` is NULL when a task has no environment** (`get_environ_ptr()`
+  returns `tg_envp`), so `env -i printenv X` dereferenced NULL and hung the
+  sim. `vapor_environ()` in nuttx-shims/vapor_libc.h hands out an empty array.
+
+Known and not fixed: paths with a `.` or `..` component *inside* a FAT
+directory fail with "Not a directory" (`cat sub/./q.txt`; from inside `/tmp/sub`,
+`cat ./q.txt` and `cat ../p.txt`; `/tmp/./p.txt` and `cat ./p.txt` from `/tmp`
+itself work). Reproduced on the sim's FAT `/tmp`, cause not investigated
+(FAT driver, not toybox). It makes `find . -exec cat {} \;` and `xargs rm`
+over `find .` output fail when run from a subdirectory. Not checked on hostfs.
+
